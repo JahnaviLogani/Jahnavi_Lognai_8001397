@@ -1,0 +1,22 @@
+[
+    {
+        "name":"Music Festival",
+        "category":"Music",
+        "date":"2026-12-20",
+        "seats":50
+    },
+
+    {
+        "name":"Baking Workshop",
+        "category":"Workshop",
+        "date":"2026-11-10",
+        "seats":20
+    },
+
+    {
+        "name":"Sports Day",
+        "category":"Sports",
+        "date":"2026-10-05",
+        "seats":0
+    }
+]
