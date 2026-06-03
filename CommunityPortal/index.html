@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Event Portal</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 20px;
+        }
+
+        nav a {
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        #welcomeBanner {
+            background-color: lightblue;
+            padding: 15px;
+        }
+
+        .highlight {
+            background-color: yellow;
+            padding: 5px;
+        }
+
+        .eventImage {
+            border: 3px solid black;
+            width: 200px;
+            height: 150px;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        form {
+            border: 2px solid gray;
+            padding: 20px;
+            width: 400px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+
+    </style>
+
+</head>
+
+<body onbeforeunload="return warningMessage()">
+
+    <!-- Navigation -->
+    <header>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#events">Events</a>
+            <a href="#contact">Contact</a>
+            <a href="help.html" target="_blank">Help</a>
+        </nav>
+
+    </header>
+
+    <!-- Main -->
+    <main>
+
+        <!-- Welcome Banner -->
+        <div id="welcomeBanner">
+
+            <h1>Welcome to Community Event Portal</h1>
+
+            <p class="highlight">
+                Register for local events easily.
+            </p>
+
+            <p>
+                Special Offer:
+                <span style="color:red; font-weight:bold;">
+                    Free entry for first 50 users!
+                </span>
+            </p>
+
+        </div>
+
+        <!-- Home Section -->
+        <section id="home">
+
+            <h2>Home</h2>
+
+            <p>
+                This portal helps residents register for events and access services.
+            </p>
+
+        </section>
+
+        <!-- Events Section -->
+        <section id="events">
+
+            <h2>Community Event Gallery</h2>
+
+            <table border="1">
+
+                <tr>
+
+                    <td>
+                        <img src="images/event1.jpg" class="eventImage"
+                            alt="Event1" title="Music Event">
+                        <p>Music Festival</p>
+                    </td>
+
+                    <td>
+                        <img src="images/event2.jpg" class="eventImage"
+                            alt="Event2" title="Food Event">
+                        <p>Food Festival</p>
+                    </td>
+
+                    <td>
+                        <img src="images/event3.jpg" class="eventImage"
+                            alt="Event3" title="Clean Up">
+                        <p>Clean Up Drive</p>
+                    </td>
+
+                </tr>
+
+                <tr>
+
+                    <td>
+                        <img src="images/event4.jpg" class="eventImage"
+                            alt="Event4" title="Dance Event">
+                        <p>Dance Show</p>
+                    </td>
+
+                    <td>
+                        <img src="images/event5.jpg" class="eventImage"
+                            alt="Event5" title="Sports">
+                        <p>Sports Day</p>
+                    </td>
+
+                    <td>
+                        <img src="images/event6.jpg" class="eventImage"
+                            alt="Event6" title="Community Meet"
+                            ondblclick="enlargeImage(this)">
+                        <p>Community Meet</p>
+                    </td>
+
+                </tr>
+
+            </table>
+
+        </section>
+
+        <br>
+
+        <!-- Registration Form -->
+        <section>
+
+            <h2>Event Registration</h2>
+
+            <form onsubmit="showConfirmation(event)">
+
+                <input type="text"
+                    placeholder="Enter Name"
+                    required
+                    autofocus>
+
+                <input type="email"
+                    placeholder="Enter Email"
+                    required>
+
+                <input type="date" required>
+
+                <select id="eventType"
+                    onchange="showFee()">
+
+                    <option value="">Select Event</option>
+                    <option value="100">Music Event</option>
+                    <option value="200">Food Festival</option>
+                    <option value="300">Sports Event</option>
+
+                </select>
+
+                <p id="feeDisplay"></p>
+
+                <input type="text"
+                    placeholder="Phone Number"
+                    onblur="validatePhone(this)">
+
+                <textarea id="feedback"
+                    placeholder="Enter Feedback"
+                    onkeyup="countCharacters()"></textarea>
+
+                <p id="charCount">Characters: 0</p>
+
+                <textarea placeholder="Message"></textarea>
+
+                <button type="submit"
+                    onclick="submitMessage()">
+                    Submit
+                </button>
+
+                <output id="outputMessage"></output>
+
+            </form>
+
+        </section>
+
+        <br>
+
+        <!-- Video Section -->
+        <section>
+
+            <h2>Event Promo Video</h2>
+
+            <video width="400"
+                controls
+                oncanplay="videoReady()">
+
+                <source src="videos/promo.mp4"
+                    type="video/mp4">
+
+            </video>
+
+            <p id="videoMessage"></p>
+
+        </section>
+
+        <br>
+
+        <!-- Geolocation -->
+        <section>
+
+            <h2>Find Nearby Events</h2>
+
+            <button onclick="findLocation()">
+                Find Nearby Events
+            </button>
+
+            <p id="location"></p>
+
+        </section>
+
+        <!-- Contact -->
+        <section id="contact">
+
+            <h2>Contact</h2>
+
+            <p>Email: support@communityportal.com</p>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+
+        <p>© 2026 Community Portal</p>
+
+    </footer>
+
+    <script>
+
+        function validatePhone(input) {
+
+            if (input.value.length < 10) {
+                alert("Phone number must be 10 digits");
+            }
+
+        }
+
+        function showFee() {
+
+            let fee =
+                document.getElementById("eventType").value;
+
+            document.getElementById("feeDisplay")
+                .innerHTML = "Event Fee: ₹" + fee;
+
+            localStorage.setItem("preferredEvent", fee);
+
+        }
+
+        window.onload = function () {
+
+            let saved =
+                localStorage.getItem("preferredEvent");
+
+            if (saved) {
+
+                document.getElementById("eventType")
+                    .value = saved;
+
+                document.getElementById("feeDisplay")
+                    .innerHTML = "Event Fee: ₹" + saved;
+
+            }
+
+        }
+
+        function submitMessage() {
+
+            alert("Registration Submitted Successfully");
+
+        }
+
+        function showConfirmation(event) {
+
+            event.preventDefault();
+
+            document.getElementById("outputMessage")
+                .value = "Registration Successful";
+
+        }
+
+        function enlargeImage(img) {
+
+            img.style.width = "400px";
+
+        }
+
+        function countCharacters() {
+
+            let text =
+                document.getElementById("feedback").value;
+
+            document.getElementById("charCount")
+                .innerHTML =
+                "Characters: " + text.length;
+
+        }
+
+        function videoReady() {
+
+            document.getElementById("videoMessage")
+                .innerHTML = "Video ready to play";
+
+        }
+
+        function warningMessage() {
+
+            return "Your form is not submitted.";
+
+        }
+
+        function clearPreferences() {
+
+            localStorage.clear();
+            sessionStorage.clear();
+
+            alert("Preferences Cleared");
+
+        }
+
+        function findLocation() {
+
+            navigator.geolocation.getCurrentPosition(
+
+                success,
+                error,
+
+                {
+                    enableHighAccuracy: true,
+                    timeout: 5000
+                }
+
+            );
+
+        }
+
+        function success(position) {
+
+            document.getElementById("location")
+                .innerHTML =
+                "Latitude: " +
+                position.coords.latitude +
+                "<br>Longitude: " +
+                position.coords.longitude;
+
+        }
+
+        function error() {
+
+            alert("Unable to retrieve location");
+
+        }
+
+    </script>
+
+    <br>
+
+    <button onclick="clearPreferences()">
+        Clear Preferences
+    </button>
+
+</body>
+
+</html>
